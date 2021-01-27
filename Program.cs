@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Diagnostics;
 namespace First_System {
     class Program {
         static void Main(string[] args) {
-            //Call Network Sniff Process
-            Process.Start(@"C:\VS_Projects\First_System\Network_Sniffer.bat");
+            //Configuration Vars
+            string path_sniffer = @"c:\VS_Projects\First_System\First_System\";// path to sniffer script
+            Process.Start(path_sniffer+"Network_Sniffer.bat"); //cal the sniffer script with Tshark
+            Thread.Sleep(10000); // pause the system for 10 secs to initialize the scrip correctly
+
             Sys obj_system = new Sys(); //System function to structure data into the sustem
             while (true) {
                 obj_system.Check_network(); //Makes the structuration of the packages in the dump file to system strucutured data

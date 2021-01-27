@@ -41,7 +41,7 @@ namespace First_System {
             int tcp_protocol = 6; //Code convention for tcp
             foreach (Package obj_package in assembled_packages_list) { //Insert each package in the corresponding stream
                 if (!this.existing_streams_tcp.Contains(obj_package.stream) && !this.done_streams_tcp.Contains(obj_package.stream)) { //If stream number is already in the sistem and isnt done yet
-                    if (obj_package.protocol_type == 6 && obj_package.flag == "0x00000002") { //Check if this is the syn (first Package) #Start a stream with a non stream package dont make sense in network
+                    if (obj_package.protocol_type == tcp_protocol && obj_package.flag == "0x00000002") { //Check if this is the syn (first Package) #Start a stream with a non stream package dont make sense in network
                         Stream obj_stream = new Stream(obj_package); //instantiate a new stream
                         obj_stream.Add_pkg(obj_package); //add the current package in the list of packages of the stream
                         this.existing_streams_tcp.Add(obj_package.stream); //add the stream number in the existing streams list for control
@@ -64,11 +64,12 @@ namespace First_System {
                     if ((DateTime.Now.Subtract(obj_stream.last_modified)).TotalSeconds >= this.max_hold_time){
                         obj_stream.Generate_features();
 
-                        Console.WriteLine(obj_stream.src_bytes);
+                        Console.WriteLine("Stream "+obj_stream.index+" engenharia reversa completa => IA");
                         this.done_streams_tcp.Add(obj_stream.index);
                     }
                 }
             }
+            //Cant remove the obj_stream while in the loop.. hold all the finalized to remove after the loop
             //if so, generate features, send to the IA, predict, show and add to the complete streams list
         }
 
